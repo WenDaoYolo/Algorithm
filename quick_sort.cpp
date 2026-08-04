@@ -9,6 +9,8 @@ void PrintArr(int* arr,int len)
 
 void MySwap(int& a,int& b)
 {
+    //注意：若两个数相同时，异或结果为0
+    if(a==b) return;
 	a=a^b;
 	b=a^b;
 	a=a^b;
@@ -16,52 +18,46 @@ void MySwap(int& a,int& b)
 
 void QuickSortUp(int* arr,int left,int right)
 {
-    int base=(left+right)/2;
-    if(left+1==right||left==right)
+    if(left>=right)
+        return;
+
+    int bv=arr[(left+right)/2];
+    int i=left,j=right;
+    while(i<=j)
     {
-        if(arr[left]>arr[right])
-            MySwap(arr[left],arr[right]);
-    }
-    else
-    {
-        int i=left,j=right;
-        while(i<j)
+        while(arr[i]<bv&&i<right) i++; 
+        while(arr[j]>bv&&j>left) j--;
+        if(i<=j)
         {
-            while(arr[i]<arr[base])
-                i++;
-            while(arr[j]>arr[base])
-                j--;
-            if(i<j)
-                MySwap(arr[i],arr[j]);
+	        MySwap(arr[i],arr[j]);
+	        i++;
+	        j--;
         }
-        QuickSortUp(arr,left,base);
-        QuickSortUp(arr,base+1,right);
     }
+    QuickSortUp(arr,left,j);
+    QuickSortUp(arr,i,right);
 }
 
 void QuickSortDown(int* arr,int left,int right)
 {
-    int base=(left+right)/2;
-    if(left+1==right||left==right)
+    if(left>=right)
+        return;
+        
+    int bv=arr[(left+right)/2];
+    int i=left,j=right;
+    while(i<=j)
     {
-        if(arr[left]<arr[right])
-            MySwap(arr[left],arr[right]);
-    }
-    else
-    {
-        int i=left,j=right;
-        while(i<j)
+        while(arr[i]>bv&&i<right) i++; 
+        while(arr[j]<bv&&j>left) j--;
+        if(i<=j)
         {
-            while(arr[i]>arr[base])
-                i++;
-            while(arr[j]<arr[base])
-                j--;
-            if(i<j)
-                MySwap(arr[i],arr[j]);
+	        MySwap(arr[i],arr[j]);
+	        i++;
+	        j--;
         }
-        QuickSortDown(arr,left,base);
-        QuickSortDown(arr,base+1,right);
     }
+    QuickSortDown(arr,left,j);
+    QuickSortDown(arr,i,right);
 }
 
 int main()
